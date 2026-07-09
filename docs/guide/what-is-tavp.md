@@ -2,7 +2,7 @@
 
 **T**ailwind CSS + **A**lpine.js + **V**olt + **P**halcon = **TAVP**
 
-TAVP adalah curated tech stack untuk membangun web application PHP yang高性能. TAVP menggabungkan performa Phalcon dengan developer experience yang modern.
+TAVP adalah curated tech stack untuk membangun web application PHP yang berperforma tinggi. TAVP menggabungkan performa Phalcon dengan developer experience yang modern.
 
 ## Komponen TAVP
 
