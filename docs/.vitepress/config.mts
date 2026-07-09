@@ -27,6 +27,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/what-is-tavp' },
       { text: 'Ecosystem', link: '/ecosystem/overview' },
       { text: 'Features', link: '/features/authentication' },
+      { text: 'FAQ', link: '/reference/faq' },
       { text: 'GitHub', link: 'https://github.com/tavp-stack' }
     ],
     sidebar: {
@@ -188,7 +189,10 @@ export default defineConfig({
       copyright: 'Copyright © 2026 TAVP Stack'
     },
     search: {
-      provider: 'local'
+      provider: 'local',
+      options: {
+        detailedView: true
+      }
     }
   }
 })
