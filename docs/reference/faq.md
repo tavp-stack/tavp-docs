@@ -6,7 +6,9 @@ Frequently Asked Questions.
 
 ### Apa itu TAVP?
 
-TAVP (The Alternative PHP) adalah full-stack PHP framework yang menawarkan alternatif untuk Laravel.
+**T**ailwind CSS + **A**lpine.js + **V**olt + **P**halcon = **TAVP**
+
+TAVP adalah curated tech stack untuk membangun web application PHP yang berperforma tinggi. Bukan framework baru, tapi kombinasi teknologi terbaik yang sudah ada.
 
 ### Bagaimana cara install TAVP?
 
