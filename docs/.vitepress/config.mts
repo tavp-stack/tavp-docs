@@ -55,7 +55,6 @@ export default defineConfig({
             { text: 'TavpBlocks', link: '/ecosystem/tavpblocks' },
             { text: 'TavpHive', link: '/ecosystem/tavphive' },
             { text: 'Tavp Marketplace', link: '/ecosystem/tavp-marketplace' },
-            { text: 'Tavp Cloud', link: '/ecosystem/tavp-cloud' },
             { text: 'Tavp Installer', link: '/ecosystem/tavp-installer' },
             { text: 'Tavp Analytics', link: '/ecosystem/tavp-analytics' },
             { text: 'Tavp Starter', link: '/ecosystem/tavp-starter' }
