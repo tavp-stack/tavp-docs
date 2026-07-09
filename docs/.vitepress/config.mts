@@ -102,7 +102,8 @@ export default defineConfig({
             { text: 'Overview', link: '/runtimes/overview' },
             { text: 'PHP-FPM', link: '/runtimes/php-fpm' },
             { text: 'TAVP Coil', link: '/runtimes/coil' },
-            { text: 'TAVP Relay', link: '/runtimes/relay' }
+            { text: 'TAVP Relay', link: '/runtimes/relay' },
+            { text: 'TAVP Weave', link: '/runtimes/weave' }
           ]
         }
       ],
