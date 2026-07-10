@@ -1,62 +1,154 @@
-# tavpid
+---
+title: Tavpid
+---
 
-Authentication system for TAVP.
+# Tavpid — Authentication Module
 
-## Features
+OTP-first authentication for TAVP. Email/SMS/WhatsApp OTP, JWT tokens, session auth, RBAC.
 
-- **OTP Authentication** — Passwordless login via Email, SMS, WhatsApp
-- **JWT API Auth** — Token-based API authentication
-- **OAuth Social** — Login with Google, Apple, GitHub
-- **Magic Link** — Email magic link login
-- **RBAC** — Role & Permission system
+## Installation
+
+```bash
+composer require tavp/tavpid
+```
 
 ## Quick Start
 
-### OTP via Email
+### OTP Login (Web Session)
 
 ```php
-// Send OTP
-POST /api/auth/otp/send
-{
-    "email": "user@example.com"
-}
+use Tavp\Tavpid\Auth\OtpService;
+use Tavp\Tavpid\Auth\SessionAuth;
+use Tavp\Tavpid\Auth\AuthService;
+use Tavp\Tavpid\Auth\UserProvider;
+
+// Create services
+$otp = new OtpService(ttlMinutes: 5, maxAttempts: 5);
+$auth = new AuthService($otp, $userProvider);
+$session = new SessionAuth($auth, $userProvider);
+
+// Request OTP
+$otpData = $session->requestCode('user@example.com');
+// $otpData = ['code' => '482916', 'hash' => '...', 'expires_at' => ...]
+// Send $otpData['code'] via email
 
 // Verify OTP
-POST /api/auth/otp/verify
-{
-    "email": "user@example.com",
-    "code": "123456"
+$success = $session->verify('482916');
+
+// Check auth
+if ($session->check()) {
+    $user = $session->user();
 }
+
+// Logout
+$session->logout();
 ```
 
-### JWT Auth
+### JWT Tokens (API)
 
 ```php
-// Login
-POST /api/auth/login
-{
-    "email": "user@example.com",
-    "password": "secret"
-}
+use Tavp\Tavpid\Auth\TokenService;
 
-// Response
-{
-    "token": "eyJ0eXAiOiJKV1Q...",
-    "expires_in": 900
-}
+$token = new TokenService(secret: 'your-secret-key');
+
+// Create token pair
+$tokens = $token->createTokenPair(userId: 42);
+// ['access_token' => '...', 'refresh_token' => '...']
+
+// Decode token
+$payload = $token->decode($tokens['access_token']);
+// ['sub' => 42, 'type' => 'access', 'iat' => ..., 'exp' => ...]
+
+// Refresh
+$newTokens = $token->refresh($tokens['refresh_token']);
 ```
 
-### Social OAuth
+### RBAC
 
 ```php
-// Redirect to Google
-GET /api/auth/google/redirect
+use Tavp\Tavpid\Rbac\AccessControl;
 
-// Callback
-GET /api/auth/google/callback
+$rbac = new AccessControl();
+$rbac->defineRole('admin', ['content.*', 'user.*']);
+$rbac->defineRole('editor', ['content.create', 'content.edit', 'content.browse']);
+
+// Check permission
+$rbac->can(['admin'], 'content.create');     // true (wildcard)
+$rbac->can(['editor'], 'user.delete');        // false
+$rbac->can(['editor', 'viewer'], 'content.create'); // true (multiple roles)
+
+// Wildcard patterns
+$rbac->can(['admin'], 'content.anything');    // true (content.* matches)
 ```
 
-## Links
+## API Reference
 
-- [GitHub](https://github.com/tavp-stack/tavpid)
-- [Documentation](/en/features/authentication)
+### OtpService
+
+| Method | Description |
+|--------|-------------|
+| `createOtp($identifier, $channel)` | Generate OTP, returns `['code', 'hash', 'expires_at']` |
+| `verifyOtp($code, $stored)` | Verify code against stored hash |
+| `hash($code)` | Hash a code for storage |
+| `getMaxAttempts()` | Get attempt limit |
+| `getTtlMinutes()` | Get TTL |
+
+### TokenService
+
+| Method | Description |
+|--------|-------------|
+| `createTokenPair($userId)` | Create access + refresh tokens |
+| `createAccessToken($userId)` | Create access token only |
+| `decode($token)` | Decode and validate token |
+| `refresh($refreshToken)` | Refresh expired access token |
+| `getUserId($token)` | Extract user ID from token |
+| `isAccessToken($token)` | Check if token is access type |
+
+### SessionAuth
+
+| Method | Description |
+|--------|-------------|
+| `requestCode($identifier, $channel)` | Send OTP, store in session |
+| `verify($code)` | Verify OTP, log user in |
+| `check()` | Is user logged in? |
+| `user()` | Get current user object |
+| `id()` | Get current user ID |
+| `logout()` | Log user out |
+
+### AccessControl
+
+| Method | Description |
+|--------|-------------|
+| `defineRole($role, $permissions)` | Define a role |
+| `loadRoles($roles)` | Load roles from config array |
+| `can($roles, $permission)` | Check permission (supports wildcards) |
+| `canAny($roles, $permissions)` | Check any permission |
+| `canAll($roles, $permissions)` | Check all permissions |
+| `permissionsFor($roles)` | Get all permissions for roles |
+| `getRoles()` | Get all defined roles |
+
+## UserProvider Interface
+
+Implement this to connect to your user store:
+
+```php
+use Tavp\Tavpid\Auth\UserProvider;
+
+class DatabaseUserProvider implements UserProvider
+{
+    public function findByIdentifier(string $identifier): ?object
+    {
+        return User::findByEmail($identifier);
+    }
+
+    public function findById(int $id): ?object
+    {
+        return User::findFirst($id);
+    }
+
+    public function create(string $identifier): object
+    {
+        return User::create(['email' => $identifier]);
+    }
+}
+```

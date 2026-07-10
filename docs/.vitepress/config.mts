@@ -47,8 +47,10 @@ export default defineConfig({
     logo: '/logo.png',
     nav: [
       { text: 'Guide', link: '/guide/what-is-tavp' },
+      { text: 'Architecture', link: '/architecture/overview' },
       { text: 'Ecosystem', link: '/ecosystem/overview' },
       { text: 'Features', link: '/features/authentication' },
+      { text: 'Standards', link: '/standards/overview' },
       { text: 'FAQ', link: '/reference/faq' },
       { text: 'GitHub', link: 'https://github.com/tavp-stack' }
     ],
@@ -62,6 +64,14 @@ export default defineConfig({
             { text: 'Installation', link: '/guide/installation' },
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Project Structure', link: '/guide/project-structure' }
+          ]
+        }
+      ],
+      '/architecture/': [
+        {
+          text: 'Architecture',
+          items: [
+            { text: 'Overview', link: '/architecture/overview' }
           ]
         }
       ],
@@ -188,9 +198,16 @@ export default defineConfig({
             { text: 'Configuration', link: '/reference/configuration' },
             { text: 'Helpers', link: '/reference/helpers' },
             { text: 'API Reference', link: '/reference/api-reference' },
-      { text: 'Reference', link: '/reference/cli-commands' },
             { text: 'Troubleshooting', link: '/reference/troubleshooting' },
             { text: 'Performance', link: '/reference/performance' }
+          ]
+        }
+      ],
+      '/standards/': [
+        {
+          text: 'Coding Standards',
+          items: [
+            { text: 'Overview', link: '/standards/overview' }
           ]
         }
       ],
