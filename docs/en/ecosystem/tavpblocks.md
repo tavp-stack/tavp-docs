@@ -4,11 +4,11 @@ title: TavpBlocks
 
 # TavpBlocks — UI Components
 
-20 real UI components with Tailwind CSS. Each component renders clean HTML.
+60 real UI components with Tailwind CSS. Each component renders clean HTML.
 
 ## Components
 
-| Component | Description |
+| Component | Category | Description |
 |-----------|-------------|
 | **Button** | Interactive button (primary/secondary/danger/ghost) |
 | **Card** | Content card with title, body, footer |

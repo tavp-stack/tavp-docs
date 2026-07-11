@@ -4,7 +4,7 @@ title: TavpBlocks
 
 # TavpBlocks — UI Components
 
-20 real UI components with Tailwind CSS. Each component renders clean HTML.
+60 real UI components with Tailwind CSS. Each component renders clean HTML.
 
 ## Components
 

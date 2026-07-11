@@ -4,7 +4,7 @@ title: TavpHub
 
 # TavpHub — Admin Panel Module
 
-Auto-generated admin panel with controllers, views, and CRUD routing.
+Complete admin panel with CRUD form generator, controllers, views, and routing.
 
 ## Installation
 
