@@ -51,7 +51,7 @@ export default defineConfig({
       { text: 'Ecosystem', link: '/ecosystem/overview' },
       { text: 'Features', link: '/features/authentication' },
       { text: 'Standards', link: '/standards/overview' },
-      { text: 'FAQ', link: '/reference/faq' },
+      { text: 'Reference', link: '/reference/cli-commands' },
       { text: 'GitHub', link: 'https://github.com/tavp-stack' }
     ],
     sidebar: {
