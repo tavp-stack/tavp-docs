@@ -66,11 +66,13 @@ tavp make:scaffold Product
 | `tavp relay:start` | Start Relay (RoadRunner) |
 | `tavp relay:stop` | Stop Relay |
 | `tavp queue:work` | Start queue worker |
+| `tavp schedule:run` | Run scheduled tasks |
 
-## Security
+## Utilities
 
 | Command | Description |
 |---------|-------------|
+| `tavp cache:clear` | Clear all cache (Volt, file, CMS cache) |
 | `tavp security:audit` | Run security audit |
 | `tavp security:scan` | Scan dependencies |
 
