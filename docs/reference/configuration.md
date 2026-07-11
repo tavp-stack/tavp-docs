@@ -15,7 +15,6 @@ APP_KEY=base64:...
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
-DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=tavp
@@ -25,8 +24,6 @@ DB_PASSWORD=secret
 MAIL_DRIVER=smtp
 MAIL_HOST=mailpit
 MAIL_PORT=1025
-MAIL_USERNAME=
-MAIL_PASSWORD=
 ```
 
 ## Config Files
@@ -65,8 +62,9 @@ return [
 | Key | Default | Description |
 |-----|---------|-------------|
 | `storage` | `database` | Storage driver: `database` or `flatfile` |
-| `admin.emails` | `[]` | Allowed admin emails |
+| `admin.emails` | `[]` | Allowed admin emails for OTP login |
 | `admin.brand` | `TAVP CMS` | Admin panel brand name |
+| `admin.otp_ttl_minutes` | `10` | OTP expiry time |
 | `taxonomy.enabled` | `true` | Enable categories + tags |
 | `revisions.enabled` | `true` | Enable version history |
 | `search.enabled` | `true` | Enable full-text search |
@@ -85,6 +83,23 @@ return [
     'brand' => env('APP_NAME', 'My App'),
     'resources' => [
         // 'post' => [\App\Resources\PostResource::class],
+    ],
+];
+```
+
+### config/hive.php
+
+```php
+return [
+    'gateways' => [
+        'stripe' => [
+            'driver' => 'stripe',
+            'secret' => env('STRIPE_SECRET', ''),
+        ],
+        'midtrans' => [
+            'driver' => 'midtrans',
+            'server_key' => env('MIDTRANS_SERVER_KEY', ''),
+        ],
     ],
 ];
 ```
