@@ -67,17 +67,6 @@ tavp make:scaffold Product
 | `tavp relay:stop` | Stop Relay |
 | `tavp queue:work` | Start queue worker |
 
-## AI
-
-| Command | Description |
-|---------|-------------|
-| `tavp ai:code` | Generate code |
-| `tavp ai:fix` | Fix code |
-| `tavp ai:explain` | Explain code |
-| `tavp ai:chat` | Interactive AI chat |
-| `tavp ai:post` | Generate blog post |
-| `tavp ai:meta` | Generate meta tags |
-
 ## Security
 
 | Command | Description |
