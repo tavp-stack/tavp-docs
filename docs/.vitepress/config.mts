@@ -112,9 +112,10 @@ export default defineConfig({
             { text: 'Search', link: '/features/search' },
             { text: 'Events', link: '/features/events' },
             { text: 'Broadcasting', link: '/features/broadcasting' },
-            { text: 'Validation', link: '/features/validation' },
-            { text: 'Security', link: '/features/security' },
-            { text: 'CMS', link: '/features/cms' }
+{ text: 'Validation', link: '/features/validation' },
+{ text: 'Security', link: '/features/security' },
+{ text: 'CMS', link: '/features/cms' },
+{ text: 'BREAD Manager', link: '/features/bread' }
           ]
         }
       ],
