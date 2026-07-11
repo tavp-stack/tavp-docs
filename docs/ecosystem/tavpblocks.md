@@ -4,56 +4,78 @@ title: TavpBlocks
 
 # TavpBlocks — UI Components
 
-UI component library for TAVP. Currently in early development.
+20 real UI components with Tailwind CSS. Each component renders clean HTML.
 
-## Status
+## Components
 
-⚠️ **Early stage** — BlockRegistry exists, full component library planned.
+| Component | Description |
+|-----------|-------------|
+| **Button** | Interactive button (primary/secondary/danger/ghost) |
+| **Card** | Content card with title, body, footer |
+| **Alert** | Alert messages (info/success/error/warning) |
+| **Badge** | Status badges (gray/green/red/yellow/blue) |
+| **Modal** | Dialog modal with confirm/cancel |
+| **Tabs** | Tab navigation (Alpine.js powered) |
+| **Pagination** | Page navigation |
+| **StatCard** | Statistics card with trend |
+| **Datatable** | Data table with search |
+| **Skeleton** | Loading skeleton |
+| **Breadcrumb** | Navigation breadcrumb |
+| **Accordion** | Collapsible sections |
+| **ProgressBar** | Progress indicator |
+| **Tooltip** | Hover tooltip |
+| **Avatar** | User avatar (image or initials) |
+| **EmptyState** | Empty state with action |
+| **LoadingSpinner** | Loading spinner |
+| **SearchBar** | Search input with icon |
+| **NotificationBell** | Notification bell with count |
+| **Timeline** | Event timeline |
 
-## What Exists
+## Usage in PHP
 
 ```php
-// BlockRegistry — register and render blocks
 use Tavp\Blocks\BlockRegistry;
 
 $registry = new BlockRegistry();
-$registry->register('button', fn ($props) => '<button>' . $props['label'] . '</button>');
+
+// Create a button
+$button = $registry->make('Button', [
+    'label' => 'Save',
+    'variant' => 'primary',
+    'href' => '/save'
+]);
+echo $button->render();
+
+// Create a stat card
+$stat = $registry->make('StatCard', [
+    'label' => 'Total Users',
+    'value' => 1234,
+    'trend' => '+12% this month',
+    'trendColor' => 'green'
+]);
+echo $stat->render();
+
+// Create a data table
+$table = $registry->make('Datatable');
+$table->addColumn('name', 'Name');
+$table->addColumn('email', 'Email');
+$table->addRow(['name' => 'John', 'email' => 'john@example.com']);
+echo $table->render();
 ```
 
-## Planned Components
-
-| Component | Description | Status |
-|-----------|-------------|--------|
-| Button | Interactive button | Planned |
-| Card | Content card | Planned |
-| Modal | Dialog modal | Planned |
-| Form | Form builder | Planned |
-| Table | Data table | Planned |
-| Tabs | Tab navigation | Planned |
-| Alert | Alert messages | Planned |
-| Badge | Status badges | Planned |
-| Dropdown | Dropdown menu | Planned |
-| Sidebar | Side navigation | Planned |
-
-## Usage (when available)
+## Usage in Volt
 
 ```php
-// In Volt template
-<x-button label="Click me" variant="primary" />
-<x-card title="Hello">
-    <p>Content here</p>
-</x-card>
+// Register component helper in ViewFactory
+$component = $registry->make('Button', ['label' => 'Click me', 'variant' => 'primary']);
+echo $component->render();
 ```
 
-## Alternative
+## Custom Components
 
-For now, use **TavpHub** (`tavp/tavphub`) for admin UI components:
+Register your own components:
 
-- `FormBuilder` — form rendering with validation
-- `TableBuilder` — data table rendering
-- `Resource` — CRUD resource definition
-
-## Link
-
-- [TavpHub](/ecosystem/tavphub)
-- [GitHub](https://github.com/tavp-stack/tavpblocks)
+```php
+$registry->register('MyButton', \App\Components\MyButton::class);
+$button = $registry->make('MyButton', ['label' => 'Custom']);
+```
