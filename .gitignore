@@ -16,3 +16,6 @@ dist/
 
 # Jangan ikut ke publik
 internal/
+
+.vercel
+.env*
