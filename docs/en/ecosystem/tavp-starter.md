@@ -17,6 +17,8 @@ tavp migrate
 tavp serve
 ```
 
+Open http://localhost:8000
+
 ## Demo App: Fleet Log
 
 The starter includes a **Vehicle Logbook** demo that showcases TAVP conventions:
@@ -99,3 +101,14 @@ See [CONVENTIONS.md](https://github.com/tavp-stack/tavp-core/blob/main/CONVENTIO
 | Variables | snake_case, full words | `$vehicle_name` |
 | Tables | plural snake_case | `vehicles`, `fuel_entries` |
 | Routes | descriptive params | `/vehicles/{id}/fuel` |
+
+## Requirements
+
+- PHP 8.3+
+- Phalcon 5.16+ (install with `tavp phalcon:install`)
+
+## Learn More
+
+- [Architecture](/architecture/overview)
+- [Coding Standards](/standards/overview)
+- [GitHub](https://github.com/tavp-stack/tavp-starter)

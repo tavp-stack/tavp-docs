@@ -1,70 +1,59 @@
-# TAVPblocks
+---
+title: TavpBlocks
+---
 
-40+ UI components untuk TAVP.
+# TavpBlocks — UI Components
 
-## Components
+UI component library for TAVP. Currently in early development.
 
-### Basic
-- Button
-- Input
-- Select
-- Textarea
-- Toggle
-- Checkbox
-- Radio
+## Status
 
-### Layout
-- Card
-- Modal
-- Dropdown
-- Tabs
-- Accordion
-- Container
-- Grid
-- Stack
+⚠️ **Early stage** — BlockRegistry exists, full component library planned.
 
-### Navigation
-- Breadcrumb
-- Pagination
-- Tabs
+## What Exists
 
-### Feedback
-- Alert
-- Toast
-- Badge
-- Tooltip
-- Spinner
-- Skeleton
-- Empty State
+```php
+// BlockRegistry — register and render blocks
+use Tavp\Blocks\BlockRegistry;
 
-### Data
-- Table
-- Datatable
-- Stat Card
-- Chart
-
-### Form
-- Form Group
-- Date Picker
-- File Upload
-
-## Usage
-
-```volt
-{{ component('button', ['type' => 'primary']) }}
-  Click me
-{{ endcomponent }}
-
-{{ component('card') }}
-  <h2>{{ title }}</h2>
-  <p>{{ content }}</p>
-{{ endcomponent }}
-
-{{ component('modal', ['id' => 'myModal']) }}
-  <p>Modal content</p>
-{{ endcomponent }}
+$registry = new BlockRegistry();
+$registry->register('button', fn ($props) => '<button>' . $props['label'] . '</button>');
 ```
+
+## Planned Components
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| Button | Interactive button | Planned |
+| Card | Content card | Planned |
+| Modal | Dialog modal | Planned |
+| Form | Form builder | Planned |
+| Table | Data table | Planned |
+| Tabs | Tab navigation | Planned |
+| Alert | Alert messages | Planned |
+| Badge | Status badges | Planned |
+| Dropdown | Dropdown menu | Planned |
+| Sidebar | Side navigation | Planned |
+
+## Usage (when available)
+
+```php
+// In Volt template
+<x-button label="Click me" variant="primary" />
+<x-card title="Hello">
+    <p>Content here</p>
+</x-card>
+```
+
+## Alternative
+
+For now, use **TavpHub** (`tavp/tavphub`) for admin UI components:
+
+- `FormBuilder` — form rendering with validation
+- `TableBuilder` — data table rendering
+- `Resource` — CRUD resource definition
 
 ## Link
 
+- [TavpHub](/ecosystem/tavphub)
 - [GitHub](https://github.com/tavp-stack/tavpblocks)

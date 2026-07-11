@@ -1,6 +1,10 @@
+---
+title: Configuration
+---
+
 # Configuration
 
-Konfigurasi TAVP.
+TAVP configuration reference.
 
 ## Environment Variables
 
@@ -18,23 +22,82 @@ DB_DATABASE=tavp
 DB_USERNAME=root
 DB_PASSWORD=secret
 
-CACHE_DRIVER=redis
-QUEUE_CONNECTION=redis
-SESSION_DRIVER=redis
+MAIL_DRIVER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+MAIL_USERNAME=
+MAIL_PASSWORD=
 ```
 
 ## Config Files
 
-| File | Description |
-|------|-------------|
-| `config/app.php` | App settings |
-| `config/database.php` | Database connections |
-| `config/cache.php` | Cache settings |
-| `config/session.php` | Session settings |
-| `config/queue.php` | Queue settings |
-| `config/mail.php` | Mail settings |
-| `config/ai.php` | AI provider settings |
+### config/app.php
+
+```php
+return [
+    'name' => env('APP_NAME', 'TAVP'),
+    'env' => env('APP_ENV', 'production'),
+    'debug' => (bool) env('APP_DEBUG', false),
+    'url' => env('APP_URL', 'http://localhost:8000'),
+    'timezone' => 'UTC',
+];
+```
+
+### config/database.php
+
+```php
+return [
+    'default' => env('DB_CONNECTION', 'mysql'),
+    'connections' => [
+        'mysql' => [
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => (int) env('DB_PORT', 3306),
+            'database' => env('DB_DATABASE', 'tavp'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+        ],
+    ],
+];
+```
+
+### config/cms.php
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `storage` | `database` | Storage driver: `database` or `flatfile` |
+| `admin.emails` | `[]` | Allowed admin emails |
+| `admin.brand` | `TAVP CMS` | Admin panel brand name |
+| `taxonomy.enabled` | `true` | Enable categories + tags |
+| `revisions.enabled` | `true` | Enable version history |
+| `search.enabled` | `true` | Enable full-text search |
+| `api.enabled` | `true` | Enable headless REST API |
+| `analytics.enabled` | `false` | Enable analytics (requires tavp-analytics) |
+| `cache.enabled` | `true` | Enable read-through cache |
+| `seo.enabled` | `true` | Enable sitemap |
+| `webhooks.enabled` | `false` | Enable webhook dispatch |
+| `publishing.enabled` | `false` | Enable scheduled publishing |
+
+### config/hub.php
+
+```php
+return [
+    'admin_prefix' => '/admin',
+    'brand' => env('APP_NAME', 'My App'),
+    'resources' => [
+        // 'post' => [\App\Resources\PostResource::class],
+    ],
+];
+```
+
+## CLI Commands for Config
+
+```bash
+tavp env:list          # Show current config
+tavp env:switch local  # Switch to local environment
+tavp key:generate      # Generate APP_KEY + JWT_SECRET
+```
 
 ## Link
 
 - [Helpers](/reference/helpers)
+- [CLI Commands](/reference/cli-commands)
