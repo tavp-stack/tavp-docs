@@ -47,9 +47,11 @@ export default defineConfig({
     logo: '/logo.png',
     nav: [
       { text: 'Guide', link: '/guide/what-is-tavp' },
+      { text: 'Architecture', link: '/architecture/overview' },
       { text: 'Ecosystem', link: '/ecosystem/overview' },
       { text: 'Features', link: '/features/authentication' },
-      { text: 'FAQ', link: '/reference/faq' },
+      { text: 'Standards', link: '/standards/overview' },
+      { text: 'Reference', link: '/reference/cli-commands' },
       { text: 'GitHub', link: 'https://github.com/tavp-stack' }
     ],
     sidebar: {
@@ -63,6 +65,14 @@ export default defineConfig({
             { text: 'Quick Start', link: '/guide/quick-start' },
             { text: 'Project Structure', link: '/guide/project-structure' },
             { text: 'TAVP Box (Dev Environment)', link: '/guide/tavpbox' }
+          ]
+        }
+      ],
+      '/architecture/': [
+        {
+          text: 'Architecture',
+          items: [
+            { text: 'Overview', link: '/architecture/overview' }
           ]
         }
       ],
@@ -103,9 +113,10 @@ export default defineConfig({
             { text: 'Search', link: '/features/search' },
             { text: 'Events', link: '/features/events' },
             { text: 'Broadcasting', link: '/features/broadcasting' },
-            { text: 'Validation', link: '/features/validation' },
-            { text: 'Security', link: '/features/security' },
-            { text: 'CMS', link: '/features/cms' }
+{ text: 'Validation', link: '/features/validation' },
+{ text: 'Security', link: '/features/security' },
+{ text: 'CMS', link: '/features/cms' },
+{ text: 'BREAD Manager', link: '/features/bread' }
           ]
         }
       ],
@@ -189,9 +200,16 @@ export default defineConfig({
             { text: 'Configuration', link: '/reference/configuration' },
             { text: 'Helpers', link: '/reference/helpers' },
             { text: 'API Reference', link: '/reference/api-reference' },
-      { text: 'Reference', link: '/reference/cli-commands' },
             { text: 'Troubleshooting', link: '/reference/troubleshooting' },
             { text: 'Performance', link: '/reference/performance' }
+          ]
+        }
+      ],
+      '/standards/': [
+        {
+          text: 'Coding Standards',
+          items: [
+            { text: 'Overview', link: '/standards/overview' }
           ]
         }
       ],
