@@ -73,6 +73,50 @@ ls /etc/php/*/conf.d/*phalcon.ini
 sudo bash install_phalcon5.sh
 ```
 
+## Lando (Local Development)
+
+When using Lando for local development, Phalcon survives container rebuilds if configured correctly.
+
+### Auto-load Phalcon
+
+Create `.lando.php.ini` in your project root:
+
+```ini
+; Auto-load Phalcon extension (survives rebuilds)
+extension=phalcon.so
+```
+
+Add to `.lando.yml`:
+
+```yaml
+config:
+  php: '8.3'
+  conf:
+    php: .lando.php.ini
+```
+
+### Install Phalcon
+
+```bash
+# Rebuild first (clean state)
+lando rebuild -y
+
+# Install Phalcon (requires root inside container)
+lando ssh -u root -c "bash /app/vendor/tavp/cli/scripts/install-phalcon.sh"
+
+# Verify
+lando ssh -c "php -m | grep -i phalcon"
+```
+
+### After Rebuild
+
+```bash
+lando rebuild -y
+lando ssh -u root -c "bash /app/vendor/tavp/cli/scripts/install-phalcon.sh"
+```
+
+The `.lando.php.ini` file ensures Phalcon loads on every rebuild. Without it, you must manually reinstall after every `lando rebuild`.
+
 ## Link
 
 - [Installation Guide](/guide/installation)
