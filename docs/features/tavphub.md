@@ -9,15 +9,26 @@ title: TavpHub — Admin Panel
 ## Install
 
 ```bash
-composer require tavp/hub
+composer require tavp/tavphub
 tavp hub:install
 ```
 
-TavpHub butuh `tavp/core` (sudah otomatis) dan opsional `tavp/blocks` untuk komponen UI siap pakai (StatCard, Pagination, Badge, dsb).
+`hub:install` akan: menambahkan dependency, membuat `config/hub.php` (dengan auto-discovery aktif), dan mendaftarkan route di `routes/web.php` (`HubModule::routes($router)` + `ResourceRegistry::discover(...)`).
+
+TavpHub butuh `tavp/core` (otomatis) dan opsional `tavp/tavpblocks` untuk komponen UI siap pakai (StatCard, Pagination, Badge, Dropdown, SearchBar, Chart, dsb).
 
 ## 1. Buat Resource
 
-Satu class = satu menu admin. Mirip Nova:
+Satu class = satu menu admin. Mirip Nova. Cara paling cepat — pakai generator CLI:
+
+```bash
+tavp hub:make:resource Product
+tavp hub:make:resource Product --model=App\Models\Product --icon=cube
+```
+
+Perintah di atas membuat `app/Resources/ProductResource.php` (dengan `columns`, `fields`, `filters`, `metrics`, `searchableColumns`) dan — bila auto-discovery aktif di `config/hub.php` — langsung muncul di sidebar tanpa edit config.
+
+Atau tulis manual:
 
 ```php
 use Tavp\Hub\Resource;
@@ -48,22 +59,24 @@ class UserResource extends Resource
 }
 ```
 
-Daftarkan lewat auto-discovery atau manual:
+Daftarkan lewat auto-discovery (default dari `hub:install`) atau manual:
 
 ```php
-// Auto-discovery: scan folder berisi Resource
+// Auto-discovery: scan folder berisi Resource (sudah dijalankan di routes/web.php)
 \Tavp\Hub\ResourceRegistry::discover(
-    base_path('app/Hub/Resources'),
-    'App\\Hub\\Resources'
+    __DIR__ . '/../app/Resources',
+    'App\\Resources'
 );
 
 // Atau manual satu per satu
 \Tavp\Hub\ResourceRegistry::register(new UserResource());
+
+// Atau via config('hub.resources') => ['user' => \App\Resources\UserResource::class]
 ```
 
-Setelah terdaftar, menu muncul di sidebar dan route `/admin/resource/users` aktif otomatis. Tidak perlu wiring路由 manual.
+Setelah terdaftar, menu muncul di sidebar dan route `/admin/resource/users` aktif otomatis. Tidak perlu wiring route manual.
 
-> **Backwards compatible:** kamu juga tetap bisa mendaftarkan resource lewat `config('hub.resources')` (array biasa). TavpHub membaca keduanya.
+> **Backwards compatible:** resource bisa didaftarkan lewat `ResourceRegistry`, `discover()`, maupun `config('hub.resources')`. TavpHub membaca ketiganya.
 
 ## 2. Filters
 
