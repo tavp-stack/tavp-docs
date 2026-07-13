@@ -33,22 +33,16 @@ di-compile ulang tiap kali laptop mati/restart**.
 
 ### Windows (PowerShell as Administrator)
 
+> **⚠️ PENTING: Harus dijalankan sebagai Administrator!**
+> 
+> Klik kanan PowerShell → "Run as Administrator"
+
 ```powershell
-# 1. Enable WSL2
-wsl --install --no-distribution
+# Download installer dari releases
+# https://github.com/tavp-stack/tavpbox/releases/tag/v0.1.0
 
-# 2. Install Ubuntu
-wsl --install -d Ubuntu
-
-# 3. Install LXD di dalam WSL
-wsl -d Ubuntu -- sudo snap install lxd
-wsl -d Ubuntu -- sudo lxd init --auto
-
-# 4. Download binary dari GitHub Releases
-# https://github.com/tavp-stack/tavpbox/releases
-
-# 5. Jalankan
-.\tavpbox.exe init
+# Jalankan sebagai Administrator
+powershell -ExecutionPolicy Bypass -File install-windows.ps1
 ```
 
 ### macOS
