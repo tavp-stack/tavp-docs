@@ -4,9 +4,11 @@ title: TavpBlocks
 
 # TavpBlocks — UI Components
 
-60+ real UI components with Tailwind CSS. Each component renders clean HTML.
+124+ real UI components with Tailwind CSS + DaisyUI + Chart.js. Each component renders clean HTML.
 
-## Interactive Components
+## Tailwind CSS Components
+
+### Interactive
 
 - **Button** — primary/secondary/danger/ghost
 - **Modal** — dialog with confirm/cancel
@@ -18,7 +20,7 @@ title: TavpBlocks
 - **CopyButton** — copy to clipboard
 - **BackToTop** — back to top button
 
-## Data Display
+### Data Display
 
 - **Card** — content card with title, body, footer
 - **StatCard** — statistics with trend
@@ -33,7 +35,7 @@ title: TavpBlocks
 - **Countdown** — countdown timer
 - **QRCode** — QR code generator
 
-## Navigation
+### Navigation
 
 - **Navbar** — navigation bar
 - **Breadcrumb** — navigation breadcrumb
@@ -41,7 +43,7 @@ title: TavpBlocks
 - **Stepper** — wizard/stepper
 - **TableOfContents** — table of contents
 
-## Feedback
+### Feedback
 
 - **Alert** — alert messages (info/success/error/warning)
 - **AlertBanner** — alert banner
@@ -51,7 +53,7 @@ title: TavpBlocks
 - **EmptyState** — empty state with action
 - **NotificationBell** — notification bell with count
 
-## Forms
+### Forms
 
 - **SearchBar** — search input
 - **DatePicker** — date picker
@@ -64,7 +66,7 @@ title: TavpBlocks
 - **TagInput** — tag input
 - **RichTextEditor** — rich text editor
 
-## Layout
+### Layout
 
 - **Divider** — divider line
 - **KeyValue** — key-value pair
@@ -72,14 +74,14 @@ title: TavpBlocks
 - **Timeline** — event timeline
 - **Comment** — comment component
 
-## Media
+### Media
 
 - **ImageGallery** — image gallery
 - **VideoPlayer** — video player
 - **AudioPlayer** — audio player
 - **MapPlaceholder** — map placeholder
 
-## Code
+### Code
 
 - **CodeBlock** — code block with syntax highlighting
 
@@ -98,6 +100,100 @@ All Chart.js chart types available via `ChartJsComponent` base class:
 - **ScatterChart** — scatter chart (x, y)
 - **Gauge** — circular progress indicator
 
+## DaisyUI Components
+
+Semantic component classes built on Tailwind CSS:
+
+### Actions
+
+- **DaisyButton** — btn, btn-primary, btn-secondary, btn-accent, btn-ghost, btn-link, btn-outline, btn-wide, btn-block
+- **DaisyDropdown** — dropdown, dropdown-content
+- **DaisyModal** — modal, modal-box, modal-action
+- **DaisySwap** — swap, swap-on, swap-off
+
+### Data Display
+
+- **DaisyAccordion** — collapse, collapse-arrow, collapse-plus
+- **DaisyAvatar** — avatar, avatar-online, avatar-offline, avatar-placeholder
+- **DaisyBadge** — badge, badge-primary, badge-secondary, badge-outline
+- **DaisyCard** — card, card-body, card-title, card-bordered, card-compact, card-side
+- **DaisyCarousel** — carousel, carousel-item
+- **DaisyChat** — chat, chat-start, chat-end, chat-bubble
+- **DaisyCollapse** — collapse, collapse-arrow, collapse-plus
+- **DaisyCountdown** — countdown
+- **DaisyDiff** — diff, diff-item-1, diff-item-2
+- **DaisyKbd** — kbd
+- **DaisyStat** — stat, stat-title, stat-value, stat-desc
+- **DaisyTable** — table, table-zebra, table-pin-rows, table-pin-cols
+- **DaisyTimeline** — timeline, timeline-box
+
+### Navigation
+
+- **DaisyBreadcrumbs** — breadcrumbs
+- **DaisyBottomNav** — btm-nav, btm-nav-xs, btm-nav-lg
+- **DaisyLink** — link, link-primary, link-secondary, link-accent, link-hover
+- **DaisyMenu** — menu, menu-title, menu-horizontal
+- **DaisyNavbar** — navbar, navbar-start, navbar-center, navbar-end
+- **DaisyPagination** — join, btn
+- **DaisySteps** — steps, step, step-primary
+
+### Feedback
+
+- **DaisyAlert** — alert, alert-info, alert-success, alert-warning, alert-error
+- **DaisyLoading** — loading, loading-spinner, loading-dots, loading-ring, loading-ball, loading-bars, loading-infinity
+- **DaisyProgress** — progress, progress-primary, progress-secondary
+- **DaisyRadialProgress** — radial-progress
+- **DaisySkeleton** — skeleton
+- **DaisyToast** — toast, toast-start, toast-center, toast-end
+- **DaisyTooltip** — tooltip, tooltip-primary, tooltip-secondary
+
+### Data Input
+
+- **DaisyCheckbox** — checkbox, checkbox-primary, checkbox-secondary
+- **DaisyFileInput** — file-input, file-input-bordered
+- **DaisyRadio** — radio, radio-primary, radio-secondary
+- **DaisyRange** — range, range-primary, range-secondary
+- **DaisyRating** — rating, rating-half
+- **DaisySelect** — select, select-bordered, select-primary, select-secondary
+- **DaisyTextfield** — input, input-bordered, input-primary, input-secondary
+- **DaisyTextarea** — textarea, textarea-bordered, textarea-primary, textarea-secondary
+- **DaisyToggle** — toggle, toggle-primary, toggle-secondary
+
+### Layout
+
+- **DaisyDivider** — divider, divider-primary, divider-vertical
+- **DaisyDrawer** — drawer, drawer-content, drawer-side
+- **DaisyFooter** — footer, footer-title
+- **DaisyHero** — hero, hero-content
+- **DaisyIndicator** — indicator, indicator-item
+- **DaisyJoin** — join, join-item
+- **DaisyMask** — mask, mask-squircle, mask-heart, mask-hexagon, mask-circle
+- **DaisyStack** — stack, stack-horizontal
+
+### Mockup
+
+- **DaisyBrowserMockup** — mockup-browser
+- **DaisyCodeMockup** — mockup-code
+- **DaisyPhoneMockup** — mockup-phone
+- **DaisyWindowMockup** — mockup-window
+
+### Utility
+
+- **DaisyFilter** — filter, filter-reset
+- **DaisyStatus** — status, status-primary, status-success, status-warning, status-error
+- **DaisyValidator** — validator, validator-hint
+
+### Form Components
+
+- **DaisyFormControl** — form-control
+- **DaisyFormGroup** — form-control, label
+- **DaisyLabel** — label, label-text
+- **DaisyHint** — label, label-text-alt
+- **DaisyError** — label, label-text-alt, text-error
+- **DaisySuccess** — label, label-text-alt, text-success
+- **DaisyWarning** — label, label-text-alt, text-warning
+- **DaisyInfo** — label, label-text-alt, text-info
+
 ## Usage in PHP
 
 ```php
@@ -105,7 +201,7 @@ use Tavp\Blocks\BlockRegistry;
 
 $registry = new BlockRegistry();
 
-// Button
+// Tailwind Component
 $button = $registry->make('Button', [
     'label' => 'Save',
     'variant' => 'primary',
@@ -113,21 +209,19 @@ $button = $registry->make('Button', [
 ]);
 echo $button->render();
 
-// Stat Card
-$stat = $registry->make('StatCard', [
-    'label' => 'Total Users',
-    'value' => 1234,
-    'trend' => '+12%',
-    'trendColor' => 'green'
+// DaisyUI Component
+$daisyBtn = $registry->make('DaisyButton', [
+    'label' => 'Click me',
+    'variant' => 'primary',
+    'size' => 'lg'
 ]);
-echo $stat->render();
+echo $daisyBtn->render();
 
-// Data Table
-$table = $registry->make('Datatable');
-$table->addColumn('name', 'Name');
-$table->addColumn('email', 'Email');
-$table->addRow(['name' => 'John', 'email' => 'john@example.com']);
-echo $table->render();
+// Chart.js Component
+$barChart = $registry->make('BarChart', ['title' => 'Sales']);
+$barChart->setLabels(['Jan', 'Feb', 'Mar'])
+         ->addDataset('Revenue', [100, 200, 300]);
+echo $barChart->render();
 ```
 
 ## Chart.js Usage
@@ -136,6 +230,7 @@ echo $table->render();
 use Tavp\Blocks\Components\BarChart;
 use Tavp\Blocks\Components\LineChart;
 use Tavp\Blocks\Components\PieChart;
+use Tavp\Blocks\Components\DoughnutChart;
 
 // Bar Chart
 $barChart = new BarChart('Monthly Sales');
@@ -174,32 +269,36 @@ $doughnutChart->addSegment('Marketing', 30, 'rgba(59, 130, 246, 0.8)')
               ->addSegment('Admin', 10, 'rgba(239, 68, 68, 0.8)')
               ->setCutout('60%');
 echo $doughnutChart->render();
-
-// Radar Chart
-$radarChart = new RadarChart('Skills Assessment');
-$radarChart->setLabels(['PHP', 'JavaScript', 'SQL', 'CSS', 'DevOps'])
-           ->addDataset('Developer A', [90, 80, 85, 70, 60])
-           ->addDataset('Developer B', [70, 90, 75, 85, 80]);
-echo $radarChart->render();
-
-// Stacked Bar Chart
-$stackedBar = new BarChart('Quarterly Revenue', true);
-$stackedBar->setLabels(['Q1', 'Q2', 'Q3', 'Q4'])
-           ->addDataset('Product A', [100, 150, 200, 180], [
-               'backgroundColor' => 'rgba(59, 130, 246, 0.8)',
-           ])
-           ->addDataset('Product B', [80, 120, 150, 140], [
-               'backgroundColor' => 'rgba(34, 197, 94, 0.8)',
-           ]);
-echo $stackedBar->render();
 ```
 
-## Usage in Volt
+## DaisyUI Usage
 
 ```php
-// Register component helper in ViewFactory
-$component = $registry->make('Button', ['label' => 'Click me', 'variant' => 'primary']);
-echo $component->render();
+use Tavp\Blocks\Components\DaisyButton;
+use Tavp\Blocks\Components\DaisyCard;
+use Tavp\Blocks\Components\DaisyModal;
+use Tavp\Blocks\Components\DaisyTable;
+
+// Button
+$btn = new DaisyButton('Save', 'primary', 'lg');
+echo $btn->render();
+
+// Card
+$card = new DaisyCard('Title', 'Body content', 'Footer actions');
+echo $card->render();
+
+// Modal
+$modal = new DaisyModal('myModal', 'Confirm', 'Are you sure?');
+echo $modal->render();
+echo $modal->getOpenButton('Open Modal');
+
+// Table
+$table = new DaisyTable('md', true); // size, zebra
+$table->addColumn('name', 'Name')
+      ->addColumn('email', 'Email')
+      ->addRow(['name' => 'John', 'email' => 'john@example.com'])
+      ->addRow(['name' => 'Jane', 'email' => 'jane@example.com']);
+echo $table->render();
 ```
 
 ## Custom Components
