@@ -52,7 +52,8 @@ export default defineConfig({
       { text: 'Features', link: '/features/authentication' },
       { text: 'Standards', link: '/standards/overview' },
       { text: 'Reference', link: '/reference/cli-commands' },
-      { text: 'GitHub', link: 'https://github.com/tavp-stack' }
+      { text: 'GitHub', link: 'https://github.com/tavp-stack' },
+      { text: 'TavpHub', link: '/features/tavphub' }
     ],
     sidebar: {
       '/guide/': [
@@ -116,7 +117,8 @@ export default defineConfig({
 { text: 'Validation', link: '/features/validation' },
 { text: 'Security', link: '/features/security' },
 { text: 'CMS', link: '/features/cms' },
-{ text: 'BREAD Manager', link: '/features/bread' }
+{ text: 'BREAD Manager', link: '/features/bread' },
+            { text: 'TavpHub Admin', link: '/features/tavphub' }
           ]
         }
       ],
