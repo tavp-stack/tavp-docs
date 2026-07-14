@@ -1,10 +1,20 @@
 import { defineConfig } from 'vitepress'
 
+const benchmarks = [
+  ['req/s', '12,000+', 'Phalcon C-Extension', 'Raw PHP requests per second'],
+  ['ms', '<10ms', 'Response Time', 'Average response time'],
+  ['modules', '12+', 'Core Modules', 'Modular ecosystem'],
+  ['components', '124+', 'UI Components', 'Tailwind + DaisyUI + Chart.js']
+]
+
 export default defineConfig({
   title: 'TAVP Stack',
   description: 'TAVP is a curated PHP tech stack combining Tailwind CSS, Alpine.js, Volt, and Phalcon for high-performance web applications. Not a framework — a curated stack.',
   outDir: '../dist',
   ignoreDeadLinks: true,
+  appearance: 'dark',
+  lastUpdated: true,
+  cleanUrls: true,
   sitemap: {
     hostname: 'https://docs.tavp.web.id'
   },

@@ -1,0 +1,217 @@
+/* TAVP Stack - Dark Slate + Golden Yellow Theme */
+
+:root {
+  --vp-c-brand-1: #FFC107;
+  --vp-c-brand-2: #FFD54F;
+  --vp-c-brand-3: #FFA000;
+  --vp-c-brand-soft: rgba(255, 193, 7, 0.14);
+
+  --vp-c-bg: #1a202c;
+  --vp-c-bg-soft: #2d3748;
+  --vp-c-bg-mute: #4a5568;
+  --vp-c-bg-alt: #2d3748;
+  --vp-c-bg-elv: #2d3748;
+
+  --vp-c-text-1: #f7fafc;
+  --vp-c-text-2: #e2e8f0;
+  --vp-c-text-3: #a0aec0;
+
+  --vp-c-border: #4a5568;
+  --vp-c-divider: #4a5568;
+  --vp-c-gutter: #4a5568;
+
+  --vp-sidebar-bg: #1a202c;
+  --vp-c-default-1: #2d3748;
+  --vp-c-default-2: #4a5568;
+  --vp-c-default-3: #718096;
+
+  --vp-c-tip-1: #FFC107;
+  --vp-c-tip-2: #FFD54F;
+  --vp-c-tip-3: #FFA000;
+
+  --vp-c-warning-1: #FFC107;
+  --vp-c-warning-2: #FFD54F;
+  --vp-c-warning-3: #FFA000;
+
+  --vp-home-hero-name-color: #FFC107;
+  --vp-home-hero-name-background: transparent;
+  --vp-button-brand-bg: #FFC107;
+  --vp-button-brand-text: #1a202c;
+  --vp-button-brand-hover-bg: #FFD54F;
+  --vp-button-alt-bg: #2d3748;
+  --vp-button-alt-text: #FFC107;
+  --vp-button-alt-hover-bg: #4a5568;
+  --vp-button-alt-border: 1px solid #FFC107;
+  --vp-custom-block-tip-bg: rgba(255, 193, 7, 0.1);
+  --vp-custom-block-tip-text: #FFC107;
+  --vp-badge-tip-text: #1a202c;
+  --vp-badge-tip-bg: #FFC107;
+
+  --vp-local-search-highlight-bg: rgba(255, 193, 7, 0.3);
+  --vp-c-highlight-bg: rgba(255, 193, 7, 0.1);
+}
+
+.dark {
+  --vp-c-bg: #1a202c;
+  --vp-c-bg-soft: #2d3748;
+  --vp-c-bg-mute: #4a5568;
+  --vp-c-bg-alt: #2d3748;
+  --vp-c-bg-elv: #2d3748;
+  --vp-c-text-1: #f7fafc;
+  --vp-c-text-2: #e2e8f0;
+  --vp-c-text-3: #a0aec0;
+  --vp-c-border: #4a5568;
+  --vp-c-divider: #4a5568;
+  --vp-sidebar-bg: #1a202c;
+}
+
+.VPHome {
+  padding-bottom: 0 !important;
+}
+
+.VPHomeHero .name {
+  font-size: 3.5rem !important;
+  line-height: 1.1 !important;
+}
+
+.VPHomeHero .text {
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+}
+
+.VPHomeHero .tagline {
+  font-size: 1.2rem !important;
+  padding-top: 12px !important;
+  border-top: 2px solid #FFC107;
+  color: #e2e8f0 !important;
+}
+
+.VPHomeFeatures .box {
+  border: 1px solid #4a5568;
+  background: #2d3748;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.VPHomeFeatures .box:hover {
+  transform: translateY(-2px);
+  border-color: #FFC107;
+}
+
+.VPHomeFeatures .icon {
+  background: rgba(255, 193, 7, 0.1) !important;
+  color: #FFC107 !important;
+}
+
+.VPHomeFeatures .title {
+  color: #FFC107 !important;
+}
+
+.VPNavBar {
+  background: #1a202c !important;
+  border-bottom: 1px solid #4a5568 !important;
+}
+
+.VPNavBar .logo {
+  height: 32px !important;
+}
+
+.VPSidebar {
+  background: #1a202c !important;
+}
+
+.VPSidebar .group .title {
+  color: #FFC107 !important;
+}
+
+.VPSidebar .link.active {
+  color: #FFC107 !important;
+  background: rgba(255, 193, 7, 0.1) !important;
+}
+
+.VPFooter {
+  border-top: 1px solid #4a5568 !important;
+  background: #1a202c !important;
+}
+
+.VPContent .content a {
+  color: #FFC107 !important;
+}
+
+.VPContent .content a:hover {
+  color: #FFD54F !important;
+}
+
+.vp-doc h1, .vp-doc h2, .vp-doc h3, .vp-doc h4 {
+  color: #FFC107 !important;
+}
+
+.vp-doc table {
+  border-color: #4a5568 !important;
+}
+
+.vp-doc th {
+  background: #2d3748 !important;
+  color: #FFC107 !important;
+}
+
+.vp-doc tr:nth-child(2n) {
+  background: #2d3748 !important;
+}
+
+.vp-doc tr {
+  background: #1a202c !important;
+}
+
+.vp-doc code {
+  background: #2d3748 !important;
+  color: #FFC107 !important;
+}
+
+.vp-doc .custom-block.tip {
+  background: rgba(255, 193, 7, 0.1) !important;
+  border-left-color: #FFC107 !important;
+}
+
+.vp-doc .custom-block.tip .custom-block-title {
+  color: #FFC107 !important;
+}
+
+/* Benchmark section */
+.benchmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.benchmark-card {
+  background: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.benchmark-card:hover {
+  border-color: #FFC107;
+}
+
+.benchmark-card .value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FFC107;
+  line-height: 1.2;
+}
+
+.benchmark-card .label {
+  font-size: 0.875rem;
+  color: #a0aec0;
+  margin-top: 0.5rem;
+}
+
+.benchmark-card .desc {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-top: 0.25rem;
+}
