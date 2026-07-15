@@ -39,14 +39,13 @@ tavpbox (Go binary)
 │   ├── tooling (dynamic subcommands)
 │   ├── panel (web UI)
 │   ├── proxy (reverse proxy management)
-│   ├── config (configuration)
-│   └── setup (dependencies + cert)
+│   └── config (configuration)
 ├── Podman client (exec wrapper)
 ├── Embedded Go proxy
 │   ├── HTTP :80
 │   ├── HTTPS :443
 │   └── Dynamic routes (routes.json)
-├── Let's Encrypt ACME (lego + Cloudflare)
+├── Wildcard cert (*.tavp.my.id) embedded
 ├── Service library (15 services)
 ├── Recipe library (7 recipes)
 ├── Lando parser (.lando.yml)
@@ -635,8 +634,7 @@ tavpbox (Go binary)
 │   ├── tooling (dynamic subcommands)
 │   ├── panel (web UI)
 │   ├── proxy (reverse proxy management)
-│   ├── config (configuration)
-│   └── setup (dependencies + cert)
+│   └── config (configuration)
 ├── Podman client (exec wrapper)
 │   ├── Create, Start, Stop, Restart, Remove
 │   ├── Exec, ExecInteractive
@@ -775,7 +773,7 @@ Ya. Pakai Podman (apt install podman).
 
 ### HTTPS gratis?
 
-Ya. Pakai Let's Encrypt (ACME DNS-01 dengan Cloudflare).
+Ya. Wildcard cert `*.tavp.my.id` di-embed di binary. Developer gak perlu setup apa-apa.
 
 ### Bisa migrasi dari Lando?
 
