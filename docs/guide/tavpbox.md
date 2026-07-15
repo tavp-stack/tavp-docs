@@ -646,10 +646,7 @@ tavpbox (Go binary)
 │   ├── HTTPS :443
 │   ├── Dynamic routes (routes.json)
 │   └── httputil.ReverseProxy
-├── Let's Encrypt ACME (lego + Cloudflare)
-│   ├── DNS-01 challenge
-│   ├── Wildcard cert (*.tavp.my.id)
-│   └── Auto-renew
+├── Wildcard cert (*.tavp.my.id) embedded
 ├── Service library (15 services)
 │   ├── Database: mariadb, mysql, postgres, mongodb
 │   ├── Cache: redis, memcached, varnish
