@@ -104,31 +104,7 @@ go install github.com/tavp-stack/tavpbox@latest
 
 ---
 
-## 2. Setup
-
-```powershell
-tavpbox setup
-```
-
-Yang dilakukan:
-1. ✅ Check/install Podman
-2. ✅ Generate wildcard cert `*.tavp.my.id` (via Let's Encrypt)
-3. ✅ Cert di-embed di binary
-
-### Config Cloudflare (sekali aja)
-
-```powershell
-tavpbox config set cloudflare_token <your-token>
-tavpbox config set cloudflare_zone <your-zone-id>
-```
-
-Buat token di: https://dash.cloudflare.com/profile/api-tokens
-- Permission: Zone → DNS → Edit
-- Zone: `tavp.my.id`
-
----
-
-## 3. Project Baru (`tavpbox init`)
+## 2. Project Baru (`tavpbox init`)
 
 ```powershell
 cd ~/projects/my-app
@@ -514,38 +490,21 @@ tavpbox mysql -u app -papp app
 
 ## 11. HTTPS
 
-TAVPBox auto-generate wildcard cert `*.tavp.my.id` via Let's Encrypt (ACME DNS-01 dengan Cloudflare).
-
-### Setup
+HTTPS otomatis. TAVPBox sudah include wildcard cert `*.tavp.my.id` yang valid. Developer gak perlu setup apa-apa.
 
 ```powershell
-# 1. Set Cloudflare credentials
-tavpbox config set cloudflare_token <token>
-tavpbox config set cloudflare_zone <zone_id>
-
-# 2. Generate cert
-tavpbox setup
+# Langsung pakai, cert auto-trusted
+tavpbox create
+# https://myproject.tavp.my.id → langsung jalan tanpa warning
 ```
+
+### Cara Kerja
+
+Cert wildcard `*.tavp.my.id` di-embed di binary. Setiap project otomatis dapat HTTPS. Browser auto-trust karena cert dari Let's Encrypt.
 
 ### Auto-renew
 
-Cert expired ~90 hari. Jalankan `tavpbox setup` sebelum expired untuk renew.
-
-### Manual renew
-
-```powershell
-tavpbox setup
-```
-
-### Troubleshooting HTTPS
-
-```powershell
-# Cek cert
-tavpbox config list
-
-# Regenerate cert
-tavpbox setup
-```
+Cert expired ~90 hari. Admin akan release binary baru sebelum expired. Developer tinggal download binary terbaru.
 
 ---
 
@@ -639,15 +598,12 @@ tavpbox config list
 ```powershell
 tavpbox config set domain_suffix tavp.my.id
 tavpbox config set default_ram 1024MB
-tavpbox config set cloudflare_token <token>
-tavpbox config set cloudflare_zone <zone_id>
 ```
 
 ### Get Config
 
 ```powershell
 tavpbox config get domain_suffix
-tavpbox config get cloudflare_token
 ```
 
 ---
@@ -737,9 +693,17 @@ tavpbox (Go binary)
 
 ### Podman not found
 
+Install Podman Desktop: https://podman-desktop.io
+
 ```powershell
-tavpbox setup
-# Atau install manual: https://podman-desktop.io
+# Windows
+winget install RedHat.PodmanDesktop
+
+# macOS
+brew install podman
+
+# Linux
+sudo apt install podman
 ```
 
 ### Container already exists
@@ -756,18 +720,11 @@ tavpbox proxy:stop
 tavpbox proxy:start
 ```
 
-### HTTPS cert error
-
-```powershell
-tavpbox setup
-# Pastikan Cloudflare token + zone ID sudah diset
-```
-
 ### Domain not resolving
 
 ```powershell
 # Cek DNS
-ping my-app.tavp.my.id
+ping myproject.tavp.my.id
 
 # Cek proxy
 tavpbox proxy:status
