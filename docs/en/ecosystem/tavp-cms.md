@@ -6,6 +6,10 @@ title: TAVP CMS
 
 Content management system built on TAVP modules. Thin glue layer — not a monolith.
 
+::: tip For users
+This page is the **developer/architecture** reference. For the end-user feature guide (storage, BREAD, SEO, etc.), see the [CMS features page](/features/cms).
+:::
+
 ## What It Is
 
 tavp-cms composes existing modules into a working CMS:

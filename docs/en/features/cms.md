@@ -6,6 +6,10 @@ title: CMS
 
 TAVP CMS is a content management system built on the TAVP Stack. WordPress-familiar, Voyager-style admin, thin and fast — with pluggable storage, headless API, SEO module, and a modern feature set.
 
+::: tip For developers
+This page is the **user-facing** feature guide. For architecture, module composition, and internal wiring, see the [TAVP CMS ecosystem page](/ecosystem/tavp-cms).
+:::
+
 ## Features
 
 - **Pluggable Storage** — Database (Phalcon ORM) or flat-file (Markdown + YAML front matter)
