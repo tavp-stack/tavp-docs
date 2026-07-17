@@ -35,7 +35,7 @@ TAVPBox adalah CLI tool yang bisa:
 tavpbox (Go binary)
 ├── CLI (cobra)
 │   ├── init, create, start, stop, restart, destroy, rebuild
-│   ├── ssh, list, info, logs
+│   ├── ssh, list, info, logs, expose
 │   ├── tooling (dynamic subcommands)
 │   ├── panel (web UI)
 │   ├── proxy (reverse proxy management)
@@ -44,8 +44,10 @@ tavpbox (Go binary)
 ├── Embedded Go proxy
 │   ├── HTTP :80
 │   ├── HTTPS :443
+│   ├── LAN ports :8081-8999
 │   └── Dynamic routes (routes.json)
 ├── Wildcard cert (*.tavp.my.id) embedded
+├── LAN port manager (fixed ports per project)
 ├── Service library (15 services)
 ├── Recipe library (7 recipes)
 ├── Lando parser (.lando.yml)
@@ -237,6 +239,7 @@ Creating box 'my-app' (tavp recipe)...
 | Mailpit | `https://mailpit.my-app.tavp.my.id` |
 | phpMyAdmin | `https://phpmyadmin.my-app.tavp.my.id` |
 | Direct | `http://localhost:<port>` |
+| LAN | `http://<host-ip>:<lan-port>` |
 
 ### Database Credentials
 
@@ -551,7 +554,68 @@ Cert wildcard di-embed di binary. Browser auto-trust. Auto-renew via GitHub Acti
 
 ---
 
-## 12. Pre-built Images
+## 12. LAN Access
+
+Akses project dari device lain di jaringan yang sama. Tanpa HTTPS, tanpa DNS — cukup `http://[IP]:[port]`.
+
+### How it works
+
+- Setiap project dapat **fixed LAN port** (8081, 8082, 8083, ...)
+- Port di-assign otomatis saat `tavpbox create`
+- Port mapping disimpan di `~/.tavpbox/lan-ports.json`
+- Container publish port sebagai `-p 8081:80` (bukan random)
+
+### Show LAN URLs
+
+```powershell
+tavpbox expose
+```
+
+Output:
+```
+🌐 LAN Access
+
+┌─────────────────────┬──────────────────────────────────────┬───────┐
+│ Project             │ URL                                  │ Port  │
+├─────────────────────┼──────────────────────────────────────┼───────┤
+│ tavp-web-id         │ http://192.168.18.160:8081           │ 8081  │
+│ lula                │ http://192.168.18.160:8082           │ 8082  │
+│ koskosan            │ http://192.168.18.160:8083           │ 8083  │
+└─────────────────────┴──────────────────────────────────────┴───────┘
+
+📋 Tambahkan ke hosts device lain (opsional):
+   192.168.18.160 tavp-web-id.tavp.my.id lula.tavp.my.id koskosan.tavp.my.id
+```
+
+### Akses dari device lain
+
+1. Buka browser di device lain
+2. Ketik: `http://192.168.18.160:8081`
+3. (Opsional) Tambah hosts entry untuk domain access
+
+### Kenapa HTTP, bukan HTTPS?
+
+| Masalah | Penjelasan |
+|---------|------------|
+| Let's Encrypt | Cert valid hanya untuk `*.tavp.my.id` → browser warning via IP |
+| Self-signed | Ribet, tiap device harus trust manual |
+| Keamanan | HTTP di LAN aman (traffic lokal, gak lewat internet) |
+
+### Port assignment
+
+| Project | LAN Port |
+|---------|----------|
+| Pertama | 8081 |
+| Kedua | 8082 |
+| Ketiga | 8083 |
+| ... | ... |
+| Terakhir | 8999 |
+
+Port tersimpan di `~/.tavpbox/lan-ports.json` dan stable (tetap sama meski restart).
+
+---
+
+## 13. Pre-built Images
 
 TAVPBox pakai pre-built images untuk performa terbaik. Semua service udah terinstall di image, jadi `tavpbox create` instant.
 
@@ -596,7 +660,7 @@ tavpbox create  # instant!
 
 ---
 
-## 13. Web Panel
+## 14. Web Panel
 
 ```powershell
 tavpbox panel
@@ -626,7 +690,7 @@ tavpbox panel:stop
 
 ---
 
-## 13. Proxy
+## 15. Proxy
 
 TAVPBox punya embedded reverse proxy (HTTP :80 + HTTPS :443).
 
@@ -663,7 +727,7 @@ Proxy routes di `~/.tavpbox/proxy/routes.json`:
 
 ---
 
-## 14. Config
+## 16. Config
 
 ### Global Config (`~/.tavpbox/config.yml`)
 
@@ -694,7 +758,7 @@ tavpbox config get domain_suffix
 
 ---
 
-## 15. Multi-Platform
+## 17. Multi-Platform
 
 | Platform | Architecture | Binary |
 |----------|-------------|--------|
@@ -713,13 +777,13 @@ make cross
 
 ---
 
-## 16. Architecture
+## 18. Architecture
 
 ```
 tavpbox (Go binary)
 ├── CLI (cobra)
 │   ├── init, create, start, stop, restart, destroy, rebuild
-│   ├── ssh, list, info, logs
+│   ├── ssh, list, info, logs, expose
 │   ├── tooling (dynamic subcommands)
 │   ├── panel (web UI)
 │   ├── proxy (reverse proxy management)
@@ -733,9 +797,14 @@ tavpbox (Go binary)
 ├── Embedded Go proxy
 │   ├── HTTP :80
 │   ├── HTTPS :443
+│   ├── LAN ports :8081-8999
 │   ├── Dynamic routes (routes.json)
 │   └── httputil.ReverseProxy
 ├── Wildcard cert (*.tavp.my.id) embedded
+├── LAN port manager (fixed ports per project)
+│   ├── Auto-assign (8081-8999)
+│   ├── Port mapping (lan-ports.json)
+│   └── Release on destroy
 ├── Service library (15 services)
 │   ├── Database: mariadb, mysql, postgres, mongodb
 │   ├── Cache: redis, memcached, varnish
@@ -771,7 +840,7 @@ tavpbox (Go binary)
 
 ---
 
-## 17. Troubleshooting
+## 19. Troubleshooting
 
 ### Podman not found
 
@@ -831,7 +900,7 @@ tavpbox rebuild
 
 ---
 
-## 18. FAQ
+## 20. FAQ
 
 ### TAVPBox vs Lando?
 
@@ -875,7 +944,7 @@ tavpbox config set domain_suffix mydomain.com
 
 ---
 
-## 19. Links
+## 21. Links
 
 - **GitHub**: https://github.com/tavp-stack/tavpbox
 - **Gitea**: https://git.glotama.com/tavp-stack/tavp-box
