@@ -19,3 +19,6 @@ internal/
 
 .vercel
 .env*
+
+# opencode local context (jangan di-push)
+.opencode/
