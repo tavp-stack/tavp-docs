@@ -1,6 +1,6 @@
 # TAVPBox — Local Development Environment
 
-TAVPBox adalah local development environment seperti [Lando](https://lando.dev), tapi pakai [Podman](https://podman.io) (bukan Docker). Hasilnya: jauh lebih irit RAM, HTTPS otomatis, dan **mendukung migrasi dari Lando**.
+TAVPBox adalah local development environment seperti [Lando](https://lando.dev), tapi pakai [Podman](https://podman.io) (bukan Docker). Hasilnya: jauh lebih irit RAM, HTTP-only (simple!), dan **mendukung migrasi dari Lando**.
 
 ```
 1 laptop = banyak "VPS mini". Tiap project = 1 container terisolasi.
@@ -9,11 +9,13 @@ TAVPBox adalah local development environment seperti [Lando](https://lando.dev),
 | | Lando (Docker) | TAVPBox (Podman) |
 |---|---|---|
 | RAM / 20 project | ~3.2 GB | ~1.5 GB |
-| HTTPS | *.lndo.site (auto) | *.tavp.my.id (auto) |
+| Protocol | HTTPS (Let's Encrypt) | HTTP only (simple!) |
 | Auto domain | *.lndo.site | *.tavp.my.id |
 | Mail per-project | mail.*.lndo.site | mailpit.*.tavp.my.id |
 | Multi-stack | ✓ | ✓ (TAVP/Laravel/Python/Node/Go/...) |
 | Lando migration | — | ✓ (full .lando.yml support) |
+| Auto-detect recipe | — | ✓ (composer.json/package.json/go.mod) |
+| Timezone | UTC | ✓ Asia/Jakarta default |
 | Web Panel | ✓ | ✓ (built-in) |
 
 ---
@@ -24,10 +26,13 @@ TAVPBox adalah CLI tool yang bisa:
 
 1. **Manage local development containers** — create, start, stop, destroy
 2. **Auto-routing domain** — `*.tavp.my.id` → container
-3. **HTTPS otomatis** — wildcard cert dari Let's Encrypt
+3. **HTTP only** — tanpa HTTPS complexity, langsung jalan
 4. **Migrasi dari Lando** — parse `.lando.yml` otomatis
-5. **Web panel** — manage semua project dari browser
-6. **Dynamic tooling** — `tavpbox artisan migrate`, `tavpbox composer install`
+5. **Auto-detect recipe** — dari `composer.json`, `package.json`, `go.mod`, `requirements.txt`
+6. **Events auto-execution** — `events.post-start` jalan otomatis saat create
+7. **Timezone default** — `Asia/Jakarta` untuk semua container
+8. **Web panel** — manage semua project dari browser
+9. **Dynamic tooling** — `tavpbox artisan migrate`, `tavpbox composer install`
 
 ### Arsitektur
 

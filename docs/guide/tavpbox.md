@@ -1,6 +1,6 @@
 # TAVPBox — Local Development Environment
 
-TAVPBox adalah local development environment seperti [Lando](https://lando.dev), tapi pakai [Podman](https://podman.io) (bukan Docker). Hasilnya: jauh lebih irit RAM, HTTPS otomatis, dan **mendukung migrasi dari Lando**.
+TAVPBox adalah local development environment seperti [Lando](https://lando.dev), tapi pakai [Podman](https://podman.io) (bukan Docker). Hasilnya: jauh lebih irit RAM, HTTP-only (simple!), dan **mendukung migrasi dari Lando**.
 
 ```
 1 laptop = banyak "VPS mini". Tiap project = 1 container terisolasi.
@@ -9,11 +9,13 @@ TAVPBox adalah local development environment seperti [Lando](https://lando.dev),
 | | Lando (Docker) | TAVPBox (Podman) |
 |---|---|---|
 | RAM / 20 project | ~3.2 GB | ~1.5 GB |
-| HTTPS | *.lndo.site (auto) | *.tavp.my.id (auto) |
+| Protocol | HTTPS (Let's Encrypt) | HTTP only (simple!) |
 | Auto domain | *.lndo.site | *.tavp.my.id |
 | Mail per-project | mail.*.lndo.site | mailpit.*.tavp.my.id |
 | Multi-stack | ✓ | ✓ (TAVP/Laravel/Python/Node/Go/...) |
 | Lando migration | — | ✓ (full .lando.yml support) |
+| Auto-detect recipe | — | ✓ (composer.json/package.json/go.mod) |
+| Timezone | UTC | ✓ Asia/Jakarta default |
 | Web Panel | ✓ | ✓ (built-in) |
 
 ---
@@ -24,10 +26,13 @@ TAVPBox adalah CLI tool yang bisa:
 
 1. **Manage local development containers** — create, start, stop, destroy
 2. **Auto-routing domain** — `*.tavp.my.id` → container
-3. **HTTPS otomatis** — wildcard cert dari Let's Encrypt
+3. **HTTP only** — tanpa HTTPS complexity, langsung jalan
 4. **Migrasi dari Lando** — parse `.lando.yml` otomatis
-5. **Web panel** — manage semua project dari browser
-6. **Dynamic tooling** — `tavpbox artisan migrate`, `tavpbox composer install`
+5. **Auto-detect recipe** — dari `composer.json`, `package.json`, `go.mod`, `requirements.txt`
+6. **Events auto-execution** — `events.post-start` jalan otomatis saat create
+7. **Timezone default** — `Asia/Jakarta` untuk semua container
+8. **Web panel** — manage semua project dari browser
+9. **Dynamic tooling** — `tavpbox artisan migrate`, `tavpbox composer install`
 
 ### Arsitektur
 
@@ -42,11 +47,9 @@ tavpbox (Go binary)
 │   └── config (configuration)
 ├── Podman client (exec wrapper)
 ├── Embedded Go proxy
-│   ├── HTTP :80
-│   ├── HTTPS :443
+│   ├── HTTP :80 (HTTP only, no HTTPS)
 │   ├── LAN ports :8081-8999
 │   └── Dynamic routes (routes.json)
-├── Wildcard cert (*.tavp.my.id) embedded
 ├── LAN port manager (fixed ports per project)
 ├── Service library (15 services)
 ├── Recipe library (7 recipes)
@@ -140,18 +143,27 @@ cd ~/projects/my-app
 tavpbox init
 ```
 
-TUI akan muncul:
+TAVPBox auto-detect recipe dari codebase:
+- `composer.json` dengan `laravel/framework` → **laravel**
+- `composer.json` dengan `phalcon/cphalcon` → **tavp**
+- `composer.json` (PHP biasa) → **php**
+- `package.json` → **node**
+- `go.mod` → **go**
+- `requirements.txt` / `pyproject.toml` → **python**
+
+TUI akan muncul dengan recipe yang sudah ter-deteksi:
 
 ```
 Project name [my-app]:
 Recipe:
-  > [1] tavp
-    [2] laravel
+    [1] tavp
+  > [2] laravel (detected)
     [3] php
     [4] node
     [5] go
     [6] python
     [7] blank
+Select [2]:
 Services (comma/space separated):
   Available: mariadb, mysql, postgres, mongodb, redis, memcached, mailpit, mailhog, phpmyadmin, adminer, elasticsearch, rabbitmq
   Default [mariadb redis mailpit]:
@@ -204,8 +216,8 @@ Yang dilakukan:
 3. Start container
 4. Install recipe (nginx + PHP + composer, dll)
 5. Install services (mariadb, redis, mailpit)
-6. Configure reverse proxy
-7. Generate HTTPS cert
+6. Run `events.post-start` commands (otomatis!)
+7. Configure reverse proxy
 
 Output:
 ```
@@ -218,14 +230,28 @@ Creating box 'my-app' (tavp recipe)...
   Installing redis...
   Installing mailpit...
   Creating startup script...
+  Running post-start events...
 
 ✓ Box 'my-app' created and running!
   Direct:  http://localhost:35941
-  Domain:  http://my-app.tavp.my.id
-  HTTPS:   https://my-app.tavp.my.id
+  HTTP:    http://my-app.tavp.my.id
+  LAN:     http://192.168.1.100:8081
   IP:      10.89.0.27
   SSH:     tavpbox ssh
 ```
+
+### Auto-create on Start
+
+`tavpbox start` otomatis create container jika belum ada:
+
+```powershell
+cd ~/projects/my-app
+tavpbox start
+# Container not found. Creating...
+# ✓ Box 'my-app' created and running!
+```
+
+Jadi cukup `tavpbox start` — gak perlu `init` + `create` secara terpisah.
 
 ---
 
@@ -235,9 +261,9 @@ Creating box 'my-app' (tavp recipe)...
 
 | Service | URL |
 |---------|-----|
-| App | `https://my-app.tavp.my.id` |
-| Mailpit | `https://mailpit.my-app.tavp.my.id` |
-| phpMyAdmin | `https://phpmyadmin.my-app.tavp.my.id` |
+| App | `http://my-app.tavp.my.id` |
+| Mailpit | `http://mailpit.my-app.tavp.my.id` |
+| phpMyAdmin | `http://phpmyadmin.my-app.tavp.my.id` |
 | Direct | `http://localhost:<port>` |
 | LAN | `http://<host-ip>:<lan-port>` |
 
@@ -337,7 +363,7 @@ tavpbox info
 # Database:  koskosan/koskosan/koskosan
 
 tavpbox create
-# https://koskosan.tavp.my.id → jalan!
+# http://koskosan.tavp.my.id → jalan!
 ```
 
 ### Mapping Lando → TAVPBox
@@ -541,16 +567,27 @@ tavpbox mysql -u app -papp app
 
 ---
 
-## 11. HTTPS
+## 11. HTTP Only (Kenapa bukan HTTPS?)
 
-HTTPS otomatis. TAVPBox sudah include wildcard cert `*.tavp.my.id` yang valid. Developer gak perlu setup apa-apa.
+TAVPBox menggunakan **HTTP saja** — tanpa HTTPS, tanpa certificate, tanpa complexity.
+
+### Kenapa HTTP?
+
+| Alasan | Penjelasan |
+|--------|------------|
+| **Simpel** | Gak perlu setup certificate, gak perlu domain asli |
+| **Local dev** | Traffic lokal, gak lewat internet — HTTP aman |
+| **Zero config** | `tavpbox start` → langsung jalan |
+| **Lando-compatible** | Sama seperti Lando — HTTP untuk local dev |
+
+### Akses
 
 ```powershell
 tavpbox create
-# https://myproject.tavp.my.id → langsung jalan
+# http://myproject.tavp.my.id → langsung jalan
 ```
 
-Cert wildcard di-embed di binary. Browser auto-trust. Auto-renew via GitHub Actions setiap minggu.
+DNS `*.tavp.my.id` diarahkan ke `127.0.0.1` (localhost). Semua request ke `*.tavp.my.id` langsung ke proxy TAVPBox di port 80.
 
 ---
 
@@ -597,9 +634,9 @@ Output:
 
 | Masalah | Penjelasan |
 |---------|------------|
-| Let's Encrypt | Cert valid hanya untuk `*.tavp.my.id` → browser warning via IP |
-| Self-signed | Ribet, tiap device harus trust manual |
-| Keamanan | HTTP di LAN aman (traffic lokal, gak lewat internet) |
+| **Simpel** | Gak perlu setup certificate, gak perlu domain asli |
+| **Local dev** | Traffic lokal, gak lewat internet — HTTP aman |
+| **Zero config** | `tavpbox start` → langsung jalan |
 
 ### Port assignment
 
@@ -692,7 +729,7 @@ tavpbox panel:stop
 
 ## 15. Proxy
 
-TAVPBox punya embedded reverse proxy (HTTP :80 + HTTPS :443).
+TAVPBox punya embedded reverse proxy (HTTP :80 saja).
 
 ### Commands
 
@@ -741,6 +778,7 @@ tavpbox config list
   default_cpu:       1
   default_image:     docker.io/library/ubuntu:24.04
   panel_port:        8080
+  default_tz:        Asia/Jakarta
 ```
 
 ### Set Config
@@ -748,12 +786,34 @@ tavpbox config list
 ```powershell
 tavpbox config set domain_suffix tavp.my.id
 tavpbox config set default_ram 1024MB
+tavpbox config set default_tz Asia/Jakarta
 ```
 
 ### Get Config
 
 ```powershell
 tavpbox config get domain_suffix
+```
+
+### Timezone
+
+Default timezone untuk semua container adalah `Asia/Jakarta`. Bisa di-change via config:
+
+```powershell
+tavpbox config set default_tz Asia/Makassar
+```
+
+### Events
+
+Events auto-dijalankan saat container create/start. Support `post-start`:
+
+```yaml
+events:
+  post-start:
+    - mkdir -p storage/app/framework/cache
+    - mkdir -p storage/logs
+    - mkdir -p storage/framework/{sessions,views,cache}
+    - chown -R www-data:www-data storage bootstrap/cache
 ```
 
 ---
@@ -790,17 +850,15 @@ tavpbox (Go binary)
 │   └── config (configuration)
 ├── Podman client (exec wrapper)
 │   ├── Create, Start, Stop, Restart, Remove
-│   ├── Exec, ExecInteractive
-│   ├── GetIP, GetHostPort
+│   ├── Exec, ExecInteractive, Copy
+│   ├── GetIP, GetHostPort, Exists
 │   ├── List, Inspect, Logs
 │   └── NetworkCreate, NetworkConnect
 ├── Embedded Go proxy
-│   ├── HTTP :80
-│   ├── HTTPS :443
+│   ├── HTTP :80 (HTTP only, no HTTPS)
 │   ├── LAN ports :8081-8999
 │   ├── Dynamic routes (routes.json)
 │   └── httputil.ReverseProxy
-├── Wildcard cert (*.tavp.my.id) embedded
 ├── LAN port manager (fixed ports per project)
 │   ├── Auto-assign (8081-8999)
 │   ├── Port mapping (lan-ports.json)
@@ -821,8 +879,11 @@ tavpbox (Go binary)
 │   ├── Service mapper
 │   ├── Tooling mapper
 │   ├── Environment mapper
+│   ├── Events mapper (post-start)
 │   ├── Proxy mapper
 │   └── Build/run executor
+├── Auto-detect recipe (composer.json/package.json/go.mod/requirements.txt)
+├── Nginx config writer (via podman cp — avoids $ escaping)
 ├── Plugin engine (~/.tavpbox/plugins/)
 └── API server (REST + embedded panel)
     ├── GET /api/health
@@ -908,7 +969,7 @@ TAVPBox pakai Podman (bukan Docker), lebih irit RAM, dan punya web panel. Lando 
 
 ### TAVPBox vs Docker?
 
-TAVPBox pakai Podman (rootless, daemonless), lebih ringan, dan punya auto-domain + HTTPS.
+TAVPBox pakai Podman (rootless, daemonless), lebih ringan, dan punya auto-domain + auto-detect recipe.
 
 ### Bisa pakai Docker?
 
@@ -926,9 +987,9 @@ Ya. Pakai Podman (brew install podman).
 
 Ya. Pakai Podman (apt install podman).
 
-### HTTPS gratis?
+### HTTPS?
 
-Ya. Wildcard cert `*.tavp.my.id` di-embed di binary. Developer gak perlu setup apa-apa.
+TAVPBox menggunakan HTTP saja — tanpa HTTPS complexity. Untuk local development, HTTP sudah cukup aman karena traffic lokal.
 
 ### Bisa migrasi dari Lando?
 
