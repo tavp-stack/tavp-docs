@@ -48,10 +48,10 @@ tavpbox (Go binary)
 │   └── setup (dependencies + cert)
 ├── Podman client (exec wrapper)
 ├── Embedded Go proxy
-│   ├── HTTP :80
-│   ├── HTTPS :443
+│   ├── HTTP :80 (HTTP only)
+│   ├── LAN ports :8081-8999
 │   └── Dynamic routes (routes.json)
-├── Let's Encrypt ACME (lego + Cloudflare)
+├── LAN port manager (fixed ports per project)
 ├── Service library (15 services)
 ├── Recipe library (7 recipes)
 ├── Lando parser (.lando.yml)
@@ -205,7 +205,7 @@ Yang dilakukan:
 4. Install recipe (nginx + PHP + composer, dll)
 5. Install services (mariadb, redis, mailpit)
 6. Configure reverse proxy
-7. Generate HTTPS cert
+7. Run events.post-start commands (otomatis!)
 
 Output:
 ```
@@ -221,8 +221,8 @@ Creating box 'my-app' (tavp recipe)...
 
 ✓ Box 'my-app' created and running!
   Direct:  http://localhost:35941
-  Domain:  http://my-app.tavp.my.id
-  HTTPS:   https://my-app.tavp.my.id
+  HTTP:    http://my-app.tavp.my.id
+  LAN:     http://192.168.1.100:8081
   IP:      10.89.0.27
   SSH:     tavpbox ssh
 ```
@@ -235,9 +235,9 @@ Creating box 'my-app' (tavp recipe)...
 
 | Service | URL |
 |---------|-----|
-| App | `https://my-app.tavp.my.id` |
-| Mailpit | `https://mailpit.my-app.tavp.my.id` |
-| phpMyAdmin | `https://phpmyadmin.my-app.tavp.my.id` |
+| App | `http://my-app.tavp.my.id` |
+| Mailpit | `http://mailpit.my-app.tavp.my.id` |
+| phpMyAdmin | `http://phpmyadmin.my-app.tavp.my.id` |
 | Direct | `http://localhost:<port>` |
 
 ### Database Credentials
@@ -335,7 +335,7 @@ tavpbox info
 # Database:  koskosan/koskosan/koskosan
 
 tavpbox create
-# https://koskosan.tavp.my.id → jalan!
+# http://koskosan.tavp.my.id → jalan!
 ```
 
 ### Mapping Lando → TAVPBox
@@ -458,7 +458,7 @@ services:
   mailpit:
     enabled: true
 ```
-- Web UI: `https://mailpit.<project>.tavp.my.id`
+- Web UI: `http://mailpit.<project>.tavp.my.id`
 - SMTP: port 1025
 
 #### phpMyAdmin (`phpmyadmin`)
@@ -467,7 +467,7 @@ services:
   phpmyadmin:
     enabled: true
 ```
-- Web UI: `https://phpmyadmin.<project>.tavp.my.id`
+- Web UI: `http://phpmyadmin.<project>.tavp.my.id`
 
 ---
 
@@ -516,40 +516,18 @@ tavpbox mysql -u app -papp app
 
 ---
 
-## 11. HTTPS
+## 11. HTTP Only
 
-TAVPBox auto-generate wildcard cert `*.tavp.my.id` via Let's Encrypt (ACME DNS-01 dengan Cloudflare).
+TAVPBox menggunakan **HTTP saja** — tanpa HTTPS, tanpa certificate, tanpa complexity.
 
-### Setup
-
-```powershell
-# 1. Set Cloudflare credentials
-tavpbox config set cloudflare_token <token>
-tavpbox config set cloudflare_zone <zone_id>
-
-# 2. Generate cert
-tavpbox setup
-```
-
-### Auto-renew
-
-Cert expired ~90 hari. Jalankan `tavpbox setup` sebelum expired untuk renew.
-
-### Manual renew
+Untuk local development, HTTP sudah cukup aman karena traffic lokal.
 
 ```powershell
-tavpbox setup
+tavpbox create
+# http://myproject.tavp.my.id → langsung jalan
 ```
 
-### Troubleshooting HTTPS
-
-```powershell
-# Cek cert
-tavpbox config list
-
-# Regenerate cert
-tavpbox setup
-```
+DNS `*.tavp.my.id` diarahkan ke `127.0.0.1` (localhost). Semua request ke `*.tavp.my.id` langsung ke proxy TAVPBox di port 80.
 
 ---
 
@@ -585,7 +563,7 @@ tavpbox panel:stop
 
 ## 13. Proxy
 
-TAVPBox punya embedded reverse proxy (HTTP :80 + HTTPS :443).
+TAVPBox punya embedded reverse proxy (HTTP :80 saja).
 
 ### Commands
 
@@ -686,22 +664,19 @@ tavpbox (Go binary)
 │   ├── panel (web UI)
 │   ├── proxy (reverse proxy management)
 │   ├── config (configuration)
-│   └── setup (dependencies + cert)
+│   └── config (configuration)
 ├── Podman client (exec wrapper)
 │   ├── Create, Start, Stop, Restart, Remove
-│   ├── Exec, ExecInteractive
-│   ├── GetIP, GetHostPort
+│   ├── Exec, ExecInteractive, Copy
+│   ├── GetIP, GetHostPort, Exists
 │   ├── List, Inspect, Logs
 │   └── NetworkCreate, NetworkConnect
 ├── Embedded Go proxy
-│   ├── HTTP :80
-│   ├── HTTPS :443
+│   ├── HTTP :80 (HTTP only, no HTTPS)
+│   ├── LAN ports :8081-8999
 │   ├── Dynamic routes (routes.json)
 │   └── httputil.ReverseProxy
-├── Let's Encrypt ACME (lego + Cloudflare)
-│   ├── DNS-01 challenge
-│   ├── Wildcard cert (*.tavp.my.id)
-│   └── Auto-renew
+├── LAN port manager (fixed ports per project)
 ├── Service library (15 services)
 │   ├── Database: mariadb, mysql, postgres, mongodb
 │   ├── Cache: redis, memcached, varnish
@@ -760,11 +735,11 @@ tavpbox proxy:stop
 tavpbox proxy:start
 ```
 
-### HTTPS cert error
+### Port sudah dipakai
 
 ```powershell
-tavpbox setup
-# Pastikan Cloudflare token + zone ID sudah diset
+tavpbox proxy:stop
+tavpbox proxy:start
 ```
 
 ### Domain not resolving
@@ -804,7 +779,7 @@ TAVPBox pakai Podman (bukan Docker), lebih irit RAM, dan punya web panel. Lando 
 
 ### TAVPBox vs Docker?
 
-TAVPBox pakai Podman (rootless, daemonless), lebih ringan, dan punya auto-domain + HTTPS.
+TAVPBox pakai Podman (rootless, daemonless), lebih ringan, dan punya auto-domain + auto-detect recipe.
 
 ### Bisa pakai Docker?
 
@@ -822,9 +797,9 @@ Ya. Pakai Podman (brew install podman).
 
 Ya. Pakai Podman (apt install podman).
 
-### HTTPS gratis?
+### HTTPS?
 
-Ya. Pakai Let's Encrypt (ACME DNS-01 dengan Cloudflare).
+TAVPBox menggunakan HTTP saja — tanpa HTTPS complexity. Untuk local development, HTTP sudah cukup aman karena traffic lokal.
 
 ### Bisa migrasi dari Lando?
 
