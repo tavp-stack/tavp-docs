@@ -742,15 +742,21 @@ tavpbox proxy:stop
 tavpbox proxy:start
 ```
 
-### Domain not resolving
+### Domain not resolving / "No project configured"
 
 ```powershell
-# Cek DNS
-ping my-app.tavp.my.id
-
-# Cek proxy
+# Check proxy routes
 tavpbox proxy:status
+
+# If routes empty, rebuild from all containers
+tavpbox start --all
+
+# Or start from each project folder
+cd ~/projects/my-app
+tavpbox start
 ```
+
+> **Note:** Use TAVPBox ≥ v0.12.1 which fixes `start --all` not registering routes (#10).
 
 ### Container won't start
 

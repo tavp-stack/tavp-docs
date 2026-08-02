@@ -2,6 +2,11 @@
 
 TAVP version history.
 
+## 0.12.1 (2026-08-02) — TAVPBox
+
+### Fixed
+- **`tavpbox start --all` not registering routes to routes.json** — `startAllContainers()` did not call `AddRoute()` for each container, leaving routes.json empty/null and proxy returning 404 "No project configured". Now registers main + mailpit routes for each container (#10).
+
 ## 1.0.0 (2026-07-07)
 
 ### Added

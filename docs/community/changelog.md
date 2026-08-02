@@ -2,6 +2,11 @@
 
 Riwayat versi TAVP.
 
+## 0.12.1 (2026-08-02) — TAVPBox
+
+### Fixed
+- **`tavpbox start --all` tidak registrasi routes ke routes.json** — `startAllContainers()` tidak memanggil `AddRoute()` untuk setiap container, sehingga routes.json tetap kosong/null dan proxy mengembalikan 404 "No project configured". Sekarang registrasi domain utama + mailpit route untuk setiap container (#10).
+
 ## 1.0.0 (2026-07-07)
 
 ### Added
